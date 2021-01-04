@@ -8,4 +8,6 @@ class FirstChoiceAI(DomineeringPlayer):
 
     def get_turn(self, board):
         possible_moves = self.compute_possible_moves(board, self.vertical)
+        if not possible_moves:
+            raise ValueError('No possible move left!')
         return possible_moves[0]
