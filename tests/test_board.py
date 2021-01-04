@@ -1,5 +1,5 @@
 import unittest
-from src.board import Board
+from domineering.board import Board
 from utils.string_utils import underline
 
 

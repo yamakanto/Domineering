@@ -1,5 +1,5 @@
 import unittest
-from src.possible_moves_evaluation import PossibleMovesEvaluation
+from domineering.possible_moves_evaluation import PossibleMovesEvaluation
 
 
 class TestPossibleMovesEval(unittest.TestCase):

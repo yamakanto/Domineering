@@ -1,7 +1,7 @@
 from utils.pattern_search import Pattern, PatternSearch
-from src.real_possible_moves_evaluation import RealPossibleMovesEvaluation
-from src.board import Board
-from src.board_analyzer import count_safe_moves_horizontal, count_safe_moves_vertical
+from domineering.real_possible_moves_evaluation import RealPossibleMovesEvaluation
+from domineering.board import Board
+from domineering.board_analyzer import count_safe_moves_horizontal, count_safe_moves_vertical
 
 
 class SafeRealPossibleMovesEvaluation(RealPossibleMovesEvaluation):

@@ -1,6 +1,6 @@
 from copy import deepcopy
 from abc import ABC, abstractmethod
-from src.board import Board
+from domineering.board import Board
 
 
 class DomineeringPlayer(ABC):

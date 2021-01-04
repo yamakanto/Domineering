@@ -1,5 +1,5 @@
-from src.board import Board
-from src.board_analyzer import can_make_move
+from domineering.board import Board
+from domineering.board_analyzer import can_make_move
 
 
 class DomineeringGame:

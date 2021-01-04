@@ -1,4 +1,4 @@
-from src.DomineeringPlayer import DomineeringPlayer
+from domineering.DomineeringPlayer import DomineeringPlayer
 
 
 class StrategyAI(DomineeringPlayer):

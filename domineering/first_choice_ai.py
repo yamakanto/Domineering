@@ -1,5 +1,5 @@
-from src.DomineeringPlayer import DomineeringPlayer
-from src.board import Board
+from domineering.DomineeringPlayer import DomineeringPlayer
+from domineering.board import Board
 
 
 class FirstChoiceAI(DomineeringPlayer):

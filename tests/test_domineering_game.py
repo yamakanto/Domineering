@@ -1,5 +1,5 @@
 import unittest
-from src.DomineeringGame import DomineeringGame
+from domineering.DomineeringGame import DomineeringGame
 from tests.mocks.player_mock import PlayerMock
 
 

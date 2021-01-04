@@ -1,7 +1,7 @@
-from src.evaluation_function import EvaluationFunction
+from domineering.evaluation_function import EvaluationFunction
 from utils.pattern_search import Pattern, PatternSearch
-from src.board import Board
-from src.board_analyzer import count_moves_horizontal, count_moves_vertical
+from domineering.board import Board
+from domineering.board_analyzer import count_moves_horizontal, count_moves_vertical
 
 
 class PossibleMovesEvaluation(EvaluationFunction):

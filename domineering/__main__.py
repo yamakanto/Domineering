@@ -1,10 +1,10 @@
-from src.DomineeringGame import DomineeringGame
-from src.human_player import HumanPlayer
-from src.first_choice_ai import FirstChoiceAI
-from src.strategy_ai import StrategyAI
-from src.possible_moves_evaluation import PossibleMovesEvaluation
-from src.real_possible_moves_evaluation import RealPossibleMovesEvaluation
-from src.possible_moves_safe_moves_evaluation import SafeRealPossibleMovesEvaluation
+from domineering.DomineeringGame import DomineeringGame
+from domineering.human_player import HumanPlayer
+from domineering.first_choice_ai import FirstChoiceAI
+from domineering.strategy_ai import StrategyAI
+from domineering.possible_moves_evaluation import PossibleMovesEvaluation
+from domineering.real_possible_moves_evaluation import RealPossibleMovesEvaluation
+from domineering.possible_moves_safe_moves_evaluation import SafeRealPossibleMovesEvaluation
 import cProfile
 
 

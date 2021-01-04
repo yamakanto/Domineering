@@ -1,8 +1,8 @@
 import unittest
-#from src.DomineeringGame import board_from_string
-from src.strategy_ai import StrategyAI
-from src.possible_moves_safe_moves_evaluation import SafeRealPossibleMovesEvaluation
-from src.board import Board
+#from domineering.DomineeringGame import board_from_string
+from domineering.strategy_ai import StrategyAI
+from domineering.possible_moves_safe_moves_evaluation import SafeRealPossibleMovesEvaluation
+from domineering.board import Board
 
 
 class TestStrategyAI(unittest.TestCase):
