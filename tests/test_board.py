@@ -8,6 +8,23 @@ class TestBoard(unittest.TestCase):
         board_string = 'EEE;EEE;EEE'
         board = Board.from_string(board_string)
         self.assertEqual(board_string, board.get_parseable_text())
+        positions = [(x, y) for x in range(3) for y in range(3)]
+        self.assertTrue(board.positions_are_empty(positions))
+
+    def test_from_string_mixed(self):
+        board_string = 'EEEE;HHEV;EEEV'
+        board = Board.from_string(board_string)
+        self.assertTrue(board.positions_are_empty(
+            [(0, 0), (0, 1), (0, 2), (0, 3), (1, 2), (2, 0), (2, 1), (2, 2)]))
+        self.assertTrue(board.positions_are_occupied(
+            [(1, 0), (1, 1), (1, 3), (2, 3)]))
+
+    def test_from_string_mixed2(self):
+        board = Board.from_string('EEEE;HHHE;EEEE')
+        self.assertTrue(board.positions_are_empty(
+            [(0, 0), (0, 1), (0, 2), (0, 3), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]))
+        self.assertTrue(board.positions_are_occupied(
+            [(1, 0), (1, 1), (1, 2)]))
 
     def test_add_move_vertical(self):
         board_string = 'EEE;EEE;EEE'

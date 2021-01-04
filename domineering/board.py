@@ -22,18 +22,7 @@ class Board:
             new_move = move[0]+1, move[1]
         else:
             new_move = move[0], move[1]+1
-        if move in self.occupied_positions:
-            raise ValueError(f'Position {move} is already occupied!')
-        if new_move in self.occupied_positions:
-            raise ValueError(f'Position {new_move} is already occupied!')
-        self.occupied_positions.add(move)
-        self.occupied_positions.add(new_move)
-        if vertical:
-            self.vertical_moves.add(move)
-            self.vertical_moves.add(new_move)
-        else:
-            self.horizontal_moves.add(move)
-            self.horizontal_moves.add(new_move)
+        self.__add_positions([move, new_move], vertical)
 
     def remove_move(self, move, vertical):
         if vertical:
@@ -42,13 +31,13 @@ class Board:
             self.__remove_move_horizontal(move)
 
     def __remove_move_vertical(self, move):
-        add_move = move[0] + 1, move[1]
-        if not self.__positions_are_occupied_vertical([move, add_move]):
+        second_move = move[0] + 1, move[1]
+        if not self.__positions_are_occupied_vertical([move, second_move]):
             raise ValueError(f'Positions are not all occupied!')
         self.vertical_moves.remove(move)
-        self.vertical_moves.remove(add_move)
+        self.vertical_moves.remove(second_move)
         self.occupied_positions.remove(move)
-        self.occupied_positions.remove(add_move)
+        self.occupied_positions.remove(second_move)
 
     def __positions_are_occupied_vertical(self, positions):
         pos_in_occupied = self.positions_are_occupied(positions)
@@ -96,21 +85,18 @@ class Board:
         rows.append(underline(first_line))
         for row in range(self.__height):
             line_symbols = [f'{row+1:2d}|']
-            line = f'{row+1:2d}|'
             for col in range(self.__width):
-                if (row, col) in self.vertical_moves:
-                    line_symbols.append(self.player_to_symb[True])
-                    line += self.player_to_symb[True]
-                elif (row, col) in self.horizontal_moves:
-                    line_symbols.append(self.player_to_symb[False])
-                    line += self.player_to_symb[False]
-                else:
-                    line_symbols.append(' ')
-                    line += self.empty_symb
-                line += ' '
-            # rows.append(line)
+                line_symbols.append(self.__get_symbol_for_pos((row, col)))
             rows.append(' '.join(line_symbols))
         return '\n'.join(rows)
+
+    def __get_symbol_for_pos(self, pos):
+        if pos in self.vertical_moves:
+            return self.player_to_symb[True]
+        elif pos in self.horizontal_moves:
+            return self.player_to_symb[False]
+        else:
+            return self.empty_symb
 
     def get_parseable_text(self):
         rows = []
@@ -126,9 +112,27 @@ class Board:
             rows.append(line)
         return ';'.join(rows)
 
+    def __add_pos(self, pos, vertical):
+        self.__add_positions([pos], vertical)
+
+    def __add_positions(self, positions, vertical):
+        player_set = self.__get_player_set(vertical)
+        if any([(pos in player_set or pos in self.occupied_positions) for pos in positions]):
+            raise ValueError(
+                f'Some position from {positions} are already occupied!')
+        for pos in positions:
+            player_set.add(pos)
+            self.occupied_positions.add(pos)
+
+    def __get_player_set(self, vertical):
+        if vertical:
+            return self.vertical_moves
+        else:
+            return self.horizontal_moves
+
     @staticmethod
     def from_string(text, empty_symb=' ', player_to_symb={True: 'V', False: 'H'}):
-        lines = text[:-1].split(';')
+        lines = text.split(';')
         board = Board(empty_symb, player_to_symb, len(lines[0]), len(lines))
         symb_to_player = {val: key for key, val in player_to_symb.items()}
         for row, line in enumerate(lines):
@@ -136,5 +140,5 @@ class Board:
                 pos = row, col
                 if not board.positions_are_occupied([pos]):
                     if symbol in symb_to_player:
-                        board.add_move(pos, symb_to_player[symbol])
+                        board.__add_pos(pos, symb_to_player[symbol])
         return board
