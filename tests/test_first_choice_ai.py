@@ -19,6 +19,12 @@ class TestFirstChoiceAI(TestAI):
         possible_moves = [(0, 1), (1, 0)]
         self.assert_move_in(move, possible_moves)
 
+    def test_no_possible_moves_throws_runtime_error(self):
+        board = Board.from_string('VV;VV')
+        ai = FirstChoiceAI(False)
+        with self.assertRaises(RuntimeError):
+            ai.get_turn(board)
+
     def test_valid_move_empty_board_vertical(self):
         board = Board.from_string('EEE;EEE;EEE')
         ai = FirstChoiceAI(True)
