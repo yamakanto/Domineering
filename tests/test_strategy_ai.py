@@ -3,9 +3,10 @@ import unittest
 from domineering.strategy_ai import StrategyAI
 from domineering.possible_moves_safe_moves_evaluation import SafeRealPossibleMovesEvaluation
 from domineering.board import Board
+from tests.test_ai import TestAI
 
 
-class TestStrategyAI(unittest.TestCase):
+class TestStrategyAI(TestAI):
     def test_simple_move_lookahead_one(self):
         board_string = 'EEVE;HHVE;EEVE;EEVE'
         board = Board.from_string(board_string)
@@ -13,15 +14,6 @@ class TestStrategyAI(unittest.TestCase):
         ai = StrategyAI(False, evaluation, 1)
         move = ai.get_turn(board)
         self.assert_move_in(move, [(2, 0), (3, 0)])
-
-    def assert_move_in(self, move, move_list):
-        if move in move_list:
-            message = 'OK'
-            result = True
-        else:
-            message = f'move {move} not in {move_list}'
-            result = False
-        self.assertTrue(result, message)
 
     def test_simple_move_lookahead_two(self):
         board_string = 'EEVE;HHVE;EEVE;EEVE'
