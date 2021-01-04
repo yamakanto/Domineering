@@ -1,5 +1,5 @@
 import unittest
-from domineering.possible_moves_safe_moves_evaluation import SafeRealPossibleMovesEvaluation
+from domineering.safe_real_possible_moves_evaluation import SafeRealPossibleMovesEvaluation
 
 
 class TestSafeRealPossibleMovesEval(unittest.TestCase):

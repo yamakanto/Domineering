@@ -1,7 +1,7 @@
 import unittest
 #from domineering.DomineeringGame import board_from_string
 from domineering.strategy_ai import StrategyAI
-from domineering.possible_moves_safe_moves_evaluation import SafeRealPossibleMovesEvaluation
+from domineering.safe_real_possible_moves_evaluation import SafeRealPossibleMovesEvaluation
 from domineering.board import Board
 from tests.test_ai import TestAI
 

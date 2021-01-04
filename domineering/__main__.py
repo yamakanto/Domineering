@@ -4,7 +4,7 @@ from domineering.first_choice_ai import FirstChoiceAI
 from domineering.strategy_ai import StrategyAI
 from domineering.possible_moves_evaluation import PossibleMovesEvaluation
 from domineering.real_possible_moves_evaluation import RealPossibleMovesEvaluation
-from domineering.possible_moves_safe_moves_evaluation import SafeRealPossibleMovesEvaluation
+from domineering.safe_real_possible_moves_evaluation import SafeRealPossibleMovesEvaluation
 import cProfile
 
 
