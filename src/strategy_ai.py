@@ -8,26 +8,11 @@ class StrategyAI(DomineeringPlayer):
         self.__lookahead_depth = lookahead_depth
 
     def get_turn(self, board):
-        '''
-        possible_moves = self.compute_possible_moves(board)
-        boards = [self._board_after_move(board, move)
-                  for move in possible_moves]
-        scores = [self.__evaluation(b) for b in boards]
-        '''
-        '''
-        possible_moves, scores = self.__explore_possible_moves(
-            board, self.vertical)
-        if self.vertical:
-            return possible_moves[scores.index(max(scores))]
-        else:
-            return possible_moves[scores.index(min(scores))]
-        '''
         best_move, _ = self.__explore_possible_moves(board, 1, self.vertical)
         return best_move
 
     def __explore_possible_moves(self, board, depth, vertical):
         possible_moves = self.compute_possible_moves(board, vertical)
-        #scores = self.__explore_possible_moves_scores(board, 1, self.vertical)
         best_move = None
         score = self.__get_initial_score(vertical)
         for move in possible_moves:
@@ -44,9 +29,9 @@ class StrategyAI(DomineeringPlayer):
 
     def __get_initial_score(self, vertical):
         if vertical:
-            return -10000
+            return float('-inf')
         else:
-            return 10000
+            return float('inf')
 
     def __score_is_better(self, new_score, old_score, vertical):
         if vertical:

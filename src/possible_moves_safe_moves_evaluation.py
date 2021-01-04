@@ -1,5 +1,7 @@
 from utils.pattern_search import Pattern, PatternSearch
 from src.real_possible_moves_evaluation import RealPossibleMovesEvaluation
+from src.board import Board
+from src.board_analyzer import count_safe_moves_horizontal, count_safe_moves_vertical
 
 
 class SafeRealPossibleMovesEvaluation(RealPossibleMovesEvaluation):
@@ -10,6 +12,8 @@ class SafeRealPossibleMovesEvaluation(RealPossibleMovesEvaluation):
         return 2*safe_moves_diff + possible_moves_diff
 
     def _compute_safe_move_diff(self, board):
+        if isinstance(board, Board):
+            return count_safe_moves_vertical(board) - count_safe_moves_horizontal(board)
         return self.__count_vertical_safe_moves(board)-self.__count_horizontal_safe_moves(board)
 
     def __count_vertical_safe_moves(self, board):

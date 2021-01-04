@@ -9,17 +9,17 @@ import cProfile
 
 
 def start_game():
-    #player1 = HumanPlayer(True)
-    #player1 = FirstChoiceAI(True)
+    player1 = HumanPlayer(True)
+    player1 = FirstChoiceAI(True)
     player2 = FirstChoiceAI(False)
     #strategy1 = PossibleMovesStrategy(True)
     eval1 = PossibleMovesEvaluation()
-    eval2 = PossibleMovesEvaluation()
+    eval2 = RealPossibleMovesEvaluation()
     eval2 = SafeRealPossibleMovesEvaluation()
-    player1 = StrategyAI(True, eval2)
+    player1 = StrategyAI(True, eval2, 2)
 
-    player2 = StrategyAI(False, eval1, 2)
-    game = DomineeringGame(7, player1, player2)
+    player2 = StrategyAI(False, eval2, 2)
+    game = DomineeringGame(5, player1, player2)
     game.play()
 
 

@@ -1,5 +1,7 @@
 from src.evaluation_function import EvaluationFunction
 from utils.pattern_search import Pattern, PatternSearch
+from src.board import Board
+from src.board_analyzer import count_moves_horizontal, count_moves_vertical
 
 
 class PossibleMovesEvaluation(EvaluationFunction):
@@ -14,6 +16,8 @@ class PossibleMovesEvaluation(EvaluationFunction):
         return self._compute_possible_moves_diff(board)
 
     def _compute_possible_moves_diff(self, board):
+        if isinstance(board, Board):
+            return count_moves_vertical(board, False) - count_moves_horizontal(board, False)
         vert_move_count = self._count_vert_moves(board)
         hor_move_count = self._count_hor_moves(board)
         return vert_move_count - hor_move_count

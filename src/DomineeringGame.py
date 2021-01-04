@@ -1,35 +1,37 @@
+from src.board import Board
+from src.board_analyzer import can_make_move
+
+
 class DomineeringGame:
     def __init__(self, width, player1, player2):
-        self.width = width
         self.player1 = player1
         self.player2 = player2
-        self.__init_board()
         self.__active_player = 0
         self.__num_to_player = {0: player1, 1: player2}
-
-    def __init_board(self):
-        self.board = []
-        for _ in range(self.width):
-            self.board.append([None for _ in range(self.width)])
+        self._repr_board = Board(' ', {True: 'V', False: 'H'}, width, width)
+        self.__player_num_to_vertical = {0: True, 1: False}
 
     def play(self):
-        while not self.__finished():
-            print(self)
-            self.__request_turn_from_active_player()
-            self.__switch_active_player()
+        while not self._finished():
+            self._play_turn()
         self.__print_finished_state()
+
+    def _play_turn(self):
+        print(self)
+        self.__request_turn_from_active_player()
+        self.__switch_active_player()
 
     def __request_turn_from_active_player(self):
         player = self.__num_to_player[self.__active_player]
-        turn = player.get_turn(self.board)
+        turn = player.get_turn(self._repr_board)
         while not self.__turn_valid(turn):
-            turn = player.get_turn(self.board)
+            turn = player.get_turn(self._repr_board)
         self.__perform_turn(turn)
 
-    def __finished(self):
-        if self.__active_player == 0 and len(self.player1.compute_possible_moves(self.board, True)) == 0:
+    def _finished(self):
+        if self.__active_player == 0 and len(self.player1.compute_possible_moves(self._repr_board, True)) == 0:
             return True
-        if self.__active_player == 1 and len(self.player2.compute_possible_moves(self.board, False)) == 0:
+        if self.__active_player == 1 and len(self.player2.compute_possible_moves(self._repr_board, False)) == 0:
             return True
         return False
 
@@ -37,63 +39,27 @@ class DomineeringGame:
         self.__active_player = 1-self.__active_player
 
     def __turn_valid(self, turn):
-        row, col = turn
-        if self.__active_player == 0:
-            if self.board[row][col] is None and self.board[row+1][col] is None:
-                return True
-        else:
-            if self.board[row][col] is None and self.board[row][col+1] is None:
-                return True
-        return False
+        vertical = self.__player_num_to_vertical[self.__active_player]
+        return can_make_move(self._repr_board, turn, vertical)
 
     def __perform_turn(self, turn):
-        row, col = turn
-        if self.__active_player == 0:
-            self.board[row][col] = 1
-            self.board[row+1][col] = 1
-        else:
-            self.board[row][col] = 2
-            self.board[row][col+1] = 2
+        self._repr_board.add_move(turn, self.__active_player == 0)
 
     def __print_finished_state(self):
         print('finished')
-        if self.__active_player == 0 and len(self.player1.compute_possible_moves(self.board, True)) == 0:
+        if self.__active_player == 0 and len(self.player1.compute_possible_moves(self._repr_board, True)) == 0:
             print('Player 2 won')
-        if self.__active_player == 1 and len(self.player2.compute_possible_moves(self.board, False)) == 0:
+        if self.__active_player == 1 and len(self.player2.compute_possible_moves(self._repr_board, False)) == 0:
             print('Player 1 won')
         print('board state at the end:')
-        print(self.__get_board_state_string())
+        print(self._repr_board)
 
     def __str__(self):
-        player_line = f'Player {self.__active_player+1}'
-        board_state = self.__get_board_state_string()
+        vert_string = 'vertical'
+        hor_string = 'horizontal'
+        player_line = f'Player {self.__active_player+1} ({vert_string if self.__active_player==0 else hor_string})'
+        board_state = str(self._repr_board)
+        return player_line+'\n' + board_state + '\n'+self._repr_board.get_parseable_text()+'\n'
 
-        return player_line+'\n' + board_state
-
-    def __get_board_state_string(self):
-        rows = []
-        first_line = '  ' + \
-            ''.join([f'{x+1:2d}' for x in range(len(self.board))])
-        rows.append(first_line)
-        rows.append('-' * len(first_line))
-
-        for index, row in enumerate(self.board):
-            line = f'{index+1:2d}|'
-            for x in row:
-                if x in [1, 2]:
-                    line += str(x)
-                else:
-                    line += ' '
-                line += ' '
-            rows.append(line)
-        return '\n'.join(rows)
-
-
-def board_from_string(s):
-    def char_to_symb(c):
-        if c == ' ':
-            return None
-        return int(c)
-    lines = s.split('\n')
-    board = [[char_to_symb(c) for c in l] for l in lines]
-    return board
+    def _get_board_parse_string(self):
+        return self._repr_board.get_parseable_text()
