@@ -27,3 +27,13 @@ class TestSafeRealPossibleMovesEval(unittest.TestCase):
         testee = SafeRealPossibleMovesEvaluation()
         result = testee(board)
         self.assertEqual(result, 5)
+
+    def test_prefers_better_board(self):
+        board1 = Board.from_string(
+            'EVHHEVE;EVHHEVE;VEEVEVE;VHHVEVE;EVEEEHH;EVHHHHV;HHEEEEV')
+        evaluation = SafeRealPossibleMovesEvaluation()
+        score1 = evaluation(board1)
+        board2 = Board.from_string(
+            'EVEHHVE;EVHHEVE;VEEVEVE;VHHVEVE;EVEEEHH;EVHHHHV;HHEEEEV')
+        score2 = evaluation(board2)
+        self.assertTrue(score1 > score2)
