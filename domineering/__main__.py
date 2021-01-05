@@ -6,6 +6,7 @@ from domineering.possible_moves_evaluation import PossibleMovesEvaluation
 from domineering.real_possible_moves_evaluation import RealPossibleMovesEvaluation
 from domineering.safe_real_possible_moves_evaluation import SafeRealPossibleMovesEvaluation
 import cProfile
+from pstats import Stats, SortKey
 
 
 def start_game():
@@ -19,15 +20,20 @@ def start_game():
     player1 = StrategyAI(True, eval2, 2)
 
     player2 = StrategyAI(False, eval2, 2)
-    game = DomineeringGame(5, player1, player2)
+    game = DomineeringGame(7, player1, player2)
     game.play()
 
 
 if __name__ == '__main__':
-    do_profiling = False
+    do_profiling = True
     if do_profiling:
         with cProfile.Profile() as pr:
             start_game()
-        pr.print_stats()
+
+        with open('profiling_stats.txt', 'w') as stream:
+            stats = Stats(pr, stream=stream)
+            stats.strip_dirs()
+            stats.sort_stats('time')
+            stats.print_stats()
     else:
         start_game()
