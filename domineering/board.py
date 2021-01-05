@@ -61,9 +61,12 @@ class Board:
         return pos_in_occupied and pos_in_horizontal
 
     def position_is_empty(self, pos):
-        if not 0 <= pos[0] < self.__height or not 0 <= pos[1] < self.__width:
+        if not self.__pos_within_boundary(pos):
             return False
         return pos not in self.occupied_positions
+
+    def __pos_within_boundary(self, pos):
+        return 0 <= pos[0] < self.__height and 0 <= pos[1] < self.__width
 
     def positions_are_empty(self, positions):
         return all([self.position_is_empty(pos) for pos in positions])
@@ -90,25 +93,22 @@ class Board:
             rows.append(' '.join(line_symbols))
         return '\n'.join(rows)
 
-    def __get_symbol_for_pos(self, pos):
+    def __get_symbol_for_pos(self, pos, empty_symb=None):
+        if not empty_symb:
+            empty_symb = self.empty_symb
         if pos in self.vertical_moves:
             return self.player_to_symb[True]
         elif pos in self.horizontal_moves:
             return self.player_to_symb[False]
         else:
-            return self.empty_symb
+            return empty_symb
 
     def get_parseable_text(self):
         rows = []
         for row in range(self.__height):
             line = ''
             for col in range(self.__width):
-                if (row, col) in self.vertical_moves:
-                    line += self.player_to_symb[True]
-                elif (row, col) in self.horizontal_moves:
-                    line += self.player_to_symb[False]
-                else:
-                    line += 'E'
+                line += self.__get_symbol_for_pos((row, col), 'E')
             rows.append(line)
         return ';'.join(rows)
 
@@ -138,7 +138,6 @@ class Board:
         for row, line in enumerate(lines):
             for col, symbol in enumerate(line):
                 pos = row, col
-                if not board.positions_are_occupied([pos]):
-                    if symbol in symb_to_player:
-                        board.__add_pos(pos, symb_to_player[symbol])
+                if symbol in symb_to_player:
+                    board.__add_pos(pos, symb_to_player[symbol])
         return board
