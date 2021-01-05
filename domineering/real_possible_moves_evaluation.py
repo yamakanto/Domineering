@@ -5,8 +5,6 @@ from domineering.board_analyzer import count_moves_horizontal, count_moves_verti
 
 class RealPossibleMovesEvaluation(PossibleMovesEvaluation):
 
-    def _count_hor_moves(self, board):
-        return count_moves_horizontal(board)
-
-    def _count_vert_moves(self, board):
-        return count_moves_vertical(board)
+    def __init__(self):
+        super().__init__()
+        self._skip_ahead = True

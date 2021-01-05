@@ -4,6 +4,8 @@ from domineering.board_analyzer import count_moves_horizontal, count_moves_verti
 
 
 class PossibleMovesEvaluation(EvaluationFunction):
+    def __init__(self):
+        self._skip_ahead = False
 
     def __call__(self, board):
         return self._compute_possible_moves_diff(board)
@@ -14,7 +16,7 @@ class PossibleMovesEvaluation(EvaluationFunction):
         return vert_move_count - hor_move_count
 
     def _count_hor_moves(self, board):
-        return count_moves_horizontal(board, False)
+        return count_moves_horizontal(board, self._skip_ahead)
 
     def _count_vert_moves(self, board):
-        return count_moves_vertical(board, False)
+        return count_moves_vertical(board, self._skip_ahead)

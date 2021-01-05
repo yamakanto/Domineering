@@ -13,18 +13,6 @@ class DomineeringPlayer(ABC):
         pass
 
     def compute_possible_moves(self, board, vertical):
-        if isinstance(board, Board):
-            return self.compute_possible_moves_new_board(board, vertical)
-
-    def _can_move_to_pos(self, row, col, board, vertical):
-        if isinstance(board, Board):
-            return self._can_move_to_pos_new_board((row, col), board, vertical)
-
-    def _board_after_move(self, board, move, vertical):
-        if isinstance(board, Board):
-            return board.get_after_move(move, vertical)
-
-    def compute_possible_moves_new_board(self, board, vertical):
         possible_moves = []
         for row in range(board.get_height()):
             for col in range(board.get_width()):
@@ -33,5 +21,9 @@ class DomineeringPlayer(ABC):
                     possible_moves.append((row, col))
         return possible_moves
 
-    def _can_move_to_pos_new_board(self, move, board, vertical):
+    def _can_move_to_pos(self, row, col, board, vertical):
+        move = row, col
         return can_make_move(board, move, vertical)
+
+    def _board_after_move(self, board, move, vertical):
+        return board.get_after_move(move, vertical)
