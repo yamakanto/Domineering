@@ -1,7 +1,7 @@
 from copy import deepcopy
 from abc import ABC, abstractmethod
 from domineering.board import Board
-from domineering.board_analyzer import can_make_move
+from domineering.board_analyzer import can_make_move, is_safe_move
 
 
 class DomineeringPlayer(ABC):
@@ -20,6 +20,15 @@ class DomineeringPlayer(ABC):
                 if can_make_move(board, move, vertical):
                     possible_moves.append((row, col))
         return possible_moves
+
+    def compute_safe_moves(self, board, vertical):
+        safe_moves = []
+        for row in range(board.get_height()):
+            for col in range(board.get_width()):
+                move = row, col
+                if is_safe_move(board, move, vertical):
+                    safe_moves.append((row, col))
+        return safe_moves
 
     def _can_move_to_pos(self, row, col, board, vertical):
         move = row, col
