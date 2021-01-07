@@ -9,19 +9,65 @@ def count_safe_moves_vertical(board, skip_ahead=True):
 def is_safe_move(board, move, vertical):
     if not can_make_move(board, move, vertical):
         return False
-    row, col = move
     if vertical:
-        left_upper = row, col - 1
-        left_lower = row + 1, col - 1
-        right_upper = row, col + 1
-        right_lower = row + 1, col + 1
-        return board.positions_are_occupied([left_upper, left_lower, right_upper, right_lower])
+        on_left_border = __is_vertical_move_on_left_border(board, move)
+        on_right_border = __is_vertical_move_on_right_border(board, move)
+        return on_left_border and on_right_border
     else:
-        upper_left = row - 1, col
-        upper_right = row - 1, col + 1
-        lower_left = row + 1, col
-        lower_right = row + 1, col + 1
-        return board.positions_are_occupied([upper_left, upper_right, lower_left, lower_right])
+        on_upper_border = __is_horizontal_move_on_upper_border(board, move)
+        on_lower_border = __is_horizontal_move_on_lower_border(board, move)
+        return on_upper_border and on_lower_border
+
+
+def is_border_move(board, move, vertical):
+    if vertical:
+        return __is_vertical_border_move(board, move)
+    else:
+        return __is_horizontal_border_move(board, move)
+
+
+def __is_vertical_border_move(board, move):
+    on_left_border = __is_vertical_move_on_left_border(board, move)
+    on_right_border = __is_vertical_move_on_right_border(board, move)
+    return on_left_border or on_right_border
+
+
+def __is_vertical_move_on_left_border(board, move):
+    row, col = move
+    left_upper = row, col - 1
+    left_lower = row + 1, col - 1
+    left = [left_upper, left_lower]
+    return board.positions_are_occupied(left)
+
+
+def __is_vertical_move_on_right_border(board, move):
+    row, col = move
+    right_upper = row, col + 1
+    right_lower = row + 1, col + 1
+    right = [right_upper, right_lower]
+    return board.positions_are_occupied(right)
+
+
+def __is_horizontal_border_move(board, move):
+    on_upper_border = __is_horizontal_move_on_upper_border(board, move)
+    on_lower_border = __is_horizontal_move_on_lower_border(board, move)
+    return on_upper_border or on_lower_border
+
+
+def __is_horizontal_move_on_upper_border(board, move):
+    row, col = move
+    upper_left = row - 1, col
+    upper_right = row - 1, col + 1
+    upper = [upper_left, upper_right]
+    return board.positions_are_occupied(upper)
+
+
+def __is_horizontal_move_on_lower_border(board, move):
+    row, col = move
+    lower_left = row + 1, col
+    lower_right = row + 1, col + 1
+    lower = [lower_left, lower_right]
+    return board.positions_are_occupied(lower)
 
 
 def count_moves_horizontal(board, skip_ahead=True):
