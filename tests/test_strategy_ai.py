@@ -4,6 +4,7 @@ from domineering.strategy_ai import StrategyAI
 from domineering.safe_real_possible_moves_evaluation import SafeRealPossibleMovesEvaluation
 from domineering.board import Board
 from tests.test_ai import TestAI
+from domineering.lookahead_depth import ProgressiveLookaheadDepth
 
 
 class TestStrategyAI(TestAI):
@@ -39,3 +40,14 @@ class TestStrategyAI(TestAI):
         move = ai.get_turn(board)
         self.assertTrue(
             move in [(2, 0), (2, 1), (4, 0), (4, 1), (4, 2), (4, 3)])
+
+    def test_bug(self):
+        empty_bs = ';'.join(['EEEEEEEEEEE' for _ in range(11)])
+        empty_board = Board.from_string(empty_bs)
+        bs = 'EEEEHHEEEEV;HHHHHHHHHHV;HHEEVVHHEVE;EVHHVVEHHVE;EVEVEVEVEVE;EVEVVVEVEVE;EVHHVHHEVHH;EVEVHHVVVVE;EVEVHHVVEVE;EVHHHHHHHHV;EVEEEEEEEEV'
+        board = Board.from_string(bs)
+        evaluation = SafeRealPossibleMovesEvaluation()
+        lookahead_func = ProgressiveLookaheadDepth([1, 2], [0, 1])
+        ai = StrategyAI(True, evaluation, lookahead_func)
+        ai.get_turn(empty_board)
+        _ = ai.get_turn(board)
